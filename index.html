@@ -169,13 +169,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 .postit-ta{width:100%;background:transparent;border:none;outline:none;font-family:var(--bf);font-size:.75rem;color:var(--pi-ink);resize:none;line-height:1.8;min-height:50px}
 [data-theme="velvet"] .postit-ta{font-style:italic}
 .postit-ta::placeholder{color:var(--pi-ink);opacity:.3}
-/* Home Claude bar */
-.home-claude{background:var(--bg2);border:.5px solid var(--border);border-radius:12px;padding:11px 14px}
-.home-claude-inp-row{display:flex;gap:8px;align-items:center}
-.home-claude-inp{flex:1;background:var(--bg3);border:.5px solid var(--border);border-radius:20px;padding:7px 13px;font-size:.75rem;color:var(--ink);outline:none}
-.home-claude-inp::placeholder{color:var(--ink3)}
-.home-claude-resp{font-size:.75rem;color:var(--ink2);line-height:1.7;margin-top:10px;padding-top:10px;border-top:.5px solid var(--border2);display:none}
-.home-claude-lbl{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);display:block;margin-bottom:3px;font-family:var(--mf)}
 /* Home week */
 .hw-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 .hw-title{font-family:var(--df);font-size:1.05rem;font-weight:var(--nw);color:var(--ink);letter-spacing:var(--nls)}
@@ -346,8 +339,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 .benttx{font-size:.75rem;color:var(--ink2);line-height:1.55;flex:1}
 .bentd{background:none;border:none;font-size:.8rem;color:var(--ink3);flex-shrink:0;padding:1px;cursor:pointer}
 .bentd:hover{color:var(--acc2)}
-.bentai{padding:8px 11px;border-top:.5px solid var(--border2);background:var(--accbg);font-size:.72rem;color:var(--ink2);line-height:1.65}
-.bentai-lbl{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);margin-bottom:3px;display:block;font-family:var(--mf)}
 
 /* ===== READING LIST ===== */
 .rl-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
@@ -404,11 +395,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 .rtb:hover{background:var(--bg3)}
 .nbody{flex:1;outline:none;font-size:.78rem;color:var(--ink2);line-height:1.9;padding:12px 14px;overflow-y:auto;font-family:var(--bf);min-height:0}
 .nbody:empty::before{content:attr(data-placeholder);color:var(--ink3);pointer-events:none}
-.nclbar{display:flex;align-items:center;gap:7px;padding:7px 14px;border-top:.5px solid var(--border2);background:var(--bg2);flex-shrink:0}
-.nclinp{flex:1;background:var(--bg3);border:.5px solid var(--border);border-radius:20px;padding:5px 11px;font-size:.68rem;color:var(--ink);outline:none}
-.nclinp::placeholder{color:var(--ink3)}
-.nclbtn{background:var(--acc);border:none;border-radius:20px;padding:5px 12px;font-size:.62rem;color:var(--bg);letter-spacing:.06em;font-family:var(--mf);cursor:pointer}
-.nclresp{padding:7px 14px;font-size:.72rem;color:var(--ink2);line-height:1.65;flex-shrink:0;max-height:130px;overflow-y:auto;border-top:.5px solid var(--border2);display:none}
 .nfolder-sel{background:var(--bg3);border:.5px solid var(--border);border-radius:5px;padding:3px 6px;font-size:.6rem;color:var(--ink);outline:none;margin-left:auto}
 .nempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--ink3);text-align:center;padding:20px}
 
@@ -437,12 +423,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 .jed::placeholder{color:var(--ink3)}
 .jacts{display:flex;align-items:center;gap:7px;margin-bottom:12px;flex-wrap:wrap}
 .jsave{background:var(--acc);border:none;border-radius:20px;padding:6px 16px;font-size:.62rem;color:var(--bg);letter-spacing:.07em;font-family:var(--mf);cursor:pointer}
-.jclinp{flex:1;min-width:100px;background:var(--bg3);border:.5px solid var(--border);border-radius:20px;padding:5px 11px;font-size:.68rem;color:var(--ink);outline:none}
-.jclinp::placeholder{color:var(--ink3)}
-.jclbtn{background:none;border:.5px solid var(--border);border-radius:20px;padding:5px 11px;font-size:.62rem;color:var(--ink2);font-family:var(--mf);cursor:pointer}
-.jclbtn:hover{background:var(--bg3)}
-.jresp{background:var(--accbg);border:.5px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:9px;font-size:.72rem;color:var(--ink2);line-height:1.65}
-.jresp-lbl{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);display:block;margin-bottom:3px;font-family:var(--mf)}
 .jentries{display:flex;flex-direction:column;gap:6px}
 .jcard{border:.5px solid var(--border);border-radius:10px;background:var(--bg2);overflow:hidden}
 .jcardh{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 12px;cursor:pointer;gap:8px}
@@ -664,17 +644,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
         </div>
       </div>
     </div>
-    <!-- Claude bar -->
-    <div class="home-claude">
-      <div class="home-claude-inp-row">
-        <input class="home-claude-inp" id="home-cl-inp" placeholder="Ask Claude anything — what should I focus on today?" onkeydown="if(event.key==='Enter')askHomeCl()">
-        <button class="pill-btn acc" onclick="askHomeCl()">✦ Ask</button>
-      </div>
-      <div class="home-claude-resp" id="home-cl-resp">
-        <span class="home-claude-lbl">✦ Claude</span>
-        <span id="home-cl-text"></span>
-      </div>
-    </div>
     <!-- Calendar -->
     <div class="calslot">
       <div class="calslot-hdr">
@@ -752,8 +721,7 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
   <div class="brainw">
     <textarea class="brainta" id="brainInp" placeholder="what's rattling around..." rows="4"></textarea>
     <div class="brainacts">
-      <button class="bbtn" onclick="addBrain(false)">+ Save</button>
-      <button class="bbtn p" onclick="addBrain(true)">✦ Ask Claude</button>
+      <button class="bbtn" onclick="addBrain()">+ Save</button>
     </div>
   </div>
   <div class="blist" id="blist"></div>
@@ -811,10 +779,7 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
     <textarea class="jed" id="jed" placeholder="Write freely. This is yours."></textarea>
     <div class="jacts">
       <button class="jsave" onclick="saveJ()">Save entry</button>
-      <input class="jclinp" id="jclinp" placeholder="Ask Claude about your entry...">
-      <button class="jclbtn" onclick="askJCl()">✦ Ask</button>
     </div>
-    <div id="jclresp"></div>
     <div class="jentries" id="jentries"></div>
   </div>
 </div>
@@ -955,19 +920,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 // ============================================================
 const SB_URL='https://isqzoaljgzjrwegjjraa.supabase.co';
 const SB_KEY='sb_publishable_4eLbGPCQo5TnE-gCS9emsg_sK2O1miV';
-const CLAUDE_PROXY=SB_URL+'/functions/v1/claude-proxy';
-
-// Unified Claude call through Supabase Edge Function proxy
-async function askClaude(system, userMsg, maxTokens=600){
-  const r=await fetch(CLAUDE_PROXY,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
-    body:JSON.stringify({system,messages:[{role:'user',content:userMsg}],max_tokens:maxTokens})
-  });
-  const d=await r.json();
-  if(d.error)throw new Error(d.error);
-  return d.content?.find(b=>b.type==='text')?.text||'No response.';
-}
 
 // Cloud sync — debounced per key, 800ms after last write
 const _syncTimers={};
@@ -1085,21 +1037,26 @@ function setT(t){
   document.getElementById('tmenu').classList.remove('open');
 }
 function togTmenu(){document.getElementById('tmenu').classList.toggle('open')}
+let _medJustOpened=false;
 function togMedDrop(e){
   if(e){e.stopPropagation();e.preventDefault();}
   const menu=document.getElementById('med-drop-menu');
   const btn=document.getElementById('med-drop-btn');
-  const isOpen=menu.classList.contains('open');
-  if(isOpen){menu.classList.remove('open');return;}
-  // Position using button's screen coordinates (fixed positioning)
+  if(menu.classList.contains('open')){
+    menu.classList.remove('open');return;
+  }
   const r=btn.getBoundingClientRect();
   menu.style.top=(r.bottom+2)+'px';
   menu.style.left=r.left+'px';
   menu.classList.add('open');
+  _medJustOpened=true;
+  setTimeout(()=>{_medJustOpened=false},50);
 }
 document.addEventListener('click',e=>{
   if(!e.target.closest('.tpick'))document.getElementById('tmenu').classList.remove('open');
-  if(!e.target.closest('#med-drop'))document.getElementById('med-drop-menu').classList.remove('open');
+  if(!_medJustOpened&&!e.target.closest('#med-drop')&&!e.target.closest('#med-drop-menu')){
+    document.getElementById('med-drop-menu').classList.remove('open');
+  }
 });
 setT(S.g('theme','cielo'));
 
@@ -1377,25 +1334,6 @@ function openLockedIn(){
 function closeLockedIn(){document.getElementById('lockedin').classList.remove('open')}
 
 // ============================================================
-// HOME CLAUDE
-// ============================================================
-async function askHomeCl(){
-  const inp=document.getElementById('home-cl-inp');const q=inp.value.trim();if(!q)return;inp.value='';
-  const respWrap=document.getElementById('home-cl-resp');const respTxt=document.getElementById('home-cl-text');
-  respWrap.style.display='block';respTxt.textContent='Thinking…';
-  const dls=S.g('deadlines',DDL);const dlSummary=dls.slice(0,3).map(d=>d.date+': '+d.text).join('; ');
-  const intention=S.g('intention_'+todayKey(),'');
-  const gs=S.g('goals',DG);let goalsDone=0,goalsTotal=0;gs.forEach(c=>{goalsTotal+=c.items.length;goalsDone+=c.items.filter(x=>x.done).length});
-  const habs=S.g('habits',DEF_HABITS);const todayLog=habs.filter(h=>S.g('hlog_'+h.id,{})[todayKey()]).map(h=>h.name).join(', ');
-  const ctx=`User context: Pre-med student, finishing MPH at Dartmouth (spring term ends June 5), starting medical school August. Today's intention: "${intention||'not set'}". Upcoming deadlines: ${dlSummary}. Goals: ${goalsDone}/${goalsTotal} done. Habits completed today: ${todayLog||'none yet'}.`;
-  try{
-    const reply=await askClaude(ctx+'\n\nYou are a sharp, warm daily thinking partner. Answer concisely — 2-4 sentences max. Be direct and useful, not motivational-poster generic.',q,400);
-    respTxt.textContent=reply;
-  }catch(e){respTxt.textContent='Could not connect: '+e.message}
-}
-document.getElementById('home-cl-inp').addEventListener('keydown',e=>{if(e.key==='Enter')askHomeCl()});
-
-// ============================================================
 // QUICK-ADD FAB
 // ============================================================
 function openFab(){document.getElementById('fab-modal').classList.add('open');setTimeout(()=>document.getElementById('fab-inp').focus(),80)}
@@ -1404,7 +1342,7 @@ function fabRoute(dest){
   const text=document.getElementById('fab-inp').value.trim();
   closeFab();
   if(dest==='brain'){
-    if(text){blist.unshift({text,ai:null});S.s('brain',blist);renderB();}
+    if(text){blist.unshift({text});S.s('brain',blist);renderB();}
     goTab('brain',null);
   } else if(dest==='deadlines'){
     if(text){dls.push({date:'TBD',text,urgent:false});saveDL();renderDL();}
@@ -1612,26 +1550,20 @@ function renderB(){
   const el=document.getElementById('blist');el.innerHTML='';
   blist.forEach((e,i)=>{
     const d=document.createElement('div');d.className='bent';
-    d.innerHTML='<div class="bentm"><span class="benttx">'+e.text+'</span><button class="bentd" onclick="delB('+i+')">×</button></div>'+(e.ai?'<div class="bentai"><span class="bentai-lbl">✦ Claude</span>'+e.ai+'</div>':'');
+function renderB(){
+  const el=document.getElementById('blist');el.innerHTML='';
+  blist.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='bent';
+    d.innerHTML='<div class="bentm"><span class="benttx">'+e.text+'</span><button class="bentd" onclick="delB('+i+')">×</button></div>';
     el.appendChild(d);
   });
 }
-async function addBrain(ask){
+function addBrain(){
   const inp=document.getElementById('brainInp');const text=inp.value.trim();if(!text)return;inp.value='';
-  blist.unshift({text,ai:null});S.s('brain',blist);renderB();
-  if(ask){
-    const first=document.getElementById('blist').firstChild;
-    const aiDiv=document.createElement('div');aiDiv.className='bentai';
-    aiDiv.innerHTML='<span class="bentai-lbl">✦ Claude</span><em style="color:var(--ink3)">Thinking...</em>';
-    first.appendChild(aiDiv);
-    try{
-      const reply=await askClaude('Sharp, warm thinking partner for a driven pre-med student finishing MPH at Dartmouth before med school in August. Big ambitions: medicine, finance, AI, health policy, fitness, creative. VCU GMED hours ongoing. Northwestern EDIT research with Dr. Phillips. When she drops a thought: (1) validate briefly, (2) name what it is, (3) suggest next tiny step. Max 3 sentences.',text,600);
-      blist[0].ai=reply;S.s('brain',blist);aiDiv.innerHTML='<span class="bentai-lbl">✦ Claude</span>'+reply;
-    }catch(e){aiDiv.innerHTML='<span class="bentai-lbl">✦ Claude</span>Could not connect: '+e.message}
-  }
+  blist.unshift({text});S.s('brain',blist);renderB();
 }
 function delB(i){blist.splice(i,1);S.s('brain',blist);renderB()}
-document.getElementById('brainInp').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.shiftKey){e.preventDefault();addBrain(false)}});
+document.getElementById('brainInp').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.shiftKey){e.preventDefault();addBrain()}});
 
 // ============================================================
 // READING LIST
@@ -1718,7 +1650,7 @@ function openN(id){
   aNoteId=id;const note=notes.find(n=>n.id===id);if(!note)return;renderSB();
   const main=document.getElementById('nmain');
   const folderOpts=NFOLDS.map(f=>`<option value="${f}"${f===note.folder?' selected':''}>${f}</option>`).join('');
-  main.innerHTML=`<div class="nmhdr"><input class="ntinp" id="ntinp" value="${(note.title||'').replace(/"/g,'&quot;')}" placeholder="Title..." oninput="upNT()"><select class="nfolder-sel" onchange="chNFolder(this.value)">${folderOpts}</select><button class="ndel" onclick="delN(${id})">×</button></div><div class="rtbar"><button class="rtb" onclick="fmt('bold')"><b>B</b></button><button class="rtb" onclick="fmt('italic')"><i>I</i></button><button class="rtb" onclick="fmt('underline')"><u>U</u></button><button class="rtb" onclick="fmt('strikeThrough')"><s>S</s></button><button class="rtb" onclick="fmtC('var(--acc2)')">● Color</button><button class="rtb" onclick="fmtC(null)">Clear</button></div><div class="nbody" id="nbody" contenteditable="true" data-placeholder="Start writing..." oninput="upNB()">${note.body}</div><div class="nclbar"><input class="nclinp" id="nclinp" placeholder="Ask Claude about this note..." onkeydown="if(event.key==='Enter')askNCl()"><button class="nclbtn" onclick="askNCl()">✦ Ask</button></div><div id="nclresp" class="nclresp"></div>`;
+  main.innerHTML=`<div class="nmhdr"><input class="ntinp" id="ntinp" value="${(note.title||'').replace(/"/g,'&quot;')}" placeholder="Title..." oninput="upNT()"><select class="nfolder-sel" onchange="chNFolder(this.value)">${folderOpts}</select><button class="ndel" onclick="delN(${id})">×</button></div><div class="rtbar"><button class="rtb" onclick="fmt('bold')"><b>B</b></button><button class="rtb" onclick="fmt('italic')"><i>I</i></button><button class="rtb" onclick="fmt('underline')"><u>U</u></button><button class="rtb" onclick="fmt('strikeThrough')"><s>S</s></button><button class="rtb" onclick="fmtC('var(--acc2)')">● Color</button><button class="rtb" onclick="fmtC(null)">Clear</button></div><div class="nbody" id="nbody" contenteditable="true" data-placeholder="Start writing..." oninput="upNB()">${note.body}</div>`;
 }
 function chNFolder(f){const n=notes.find(x=>x.id===aNoteId);if(n){n.folder=f;saveN();renderSB()}}
 function fmt(cmd){document.execCommand(cmd,false,null)}
@@ -1728,16 +1660,6 @@ function upNB(){const n=notes.find(x=>x.id===aNoteId);if(!n)return;n.body=docume
 function newNote(){nCtr++;S.s('nCtr',nCtr);const n={id:nCtr,folder:'General',title:'',body:'',date:new Date().toISOString()};notes.unshift(n);saveN();renderSB();openN(nCtr)}
 function delN(id){notes=notes.filter(n=>n.id!==id);aNoteId=null;saveN();renderSB();document.getElementById('nmain').innerHTML='<div class="nempty"><div style="font-size:22px;opacity:.22">✦</div><div style="font-size:.75rem">Select or create a note</div></div>'}
 function filterNotes(){renderSB(document.getElementById('nsinp').value.toLowerCase().trim())}
-async function askNCl(){
-  const inp=document.getElementById('nclinp');const q=inp.value.trim();if(!q)return;inp.value='';
-  const note=notes.find(n=>n.id===aNoteId);const ctx=note?(note.title+'\n'+note.body.replace(/<[^>]+>/g,'')):'';
-  const resp=document.getElementById('nclresp');resp.style.display='block';
-  resp.innerHTML='<em style="color:var(--ink3);font-size:.68rem">Thinking...</em>';
-  try{
-    const reply=await askClaude('Smart assistant helping a pre-med student (Dartmouth MPH, starting med school August). Be concise and direct.','My note:\n'+ctx+'\n\nQuestion: '+q,600);
-    resp.innerHTML='<span style="font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);display:block;margin-bottom:3px;font-family:var(--mf)">✦ Claude</span>'+reply;
-  }catch(e){resp.innerHTML='<em style="color:var(--ink3);font-size:.68rem">Could not connect: '+e.message+'</em>'}
-}
 
 // ============================================================
 // JOURNAL
@@ -1774,18 +1696,6 @@ function saveJ(){
 }
 function delJ(i){jEs.splice(i,1);S.s('journal',jEs);renderJ()}
 function newJ(){document.getElementById('jed').value='';document.getElementById('jed').focus()}
-async function askJCl(){
-  const q=document.getElementById('jclinp').value.trim();if(!q)return;document.getElementById('jclinp').value='';
-  const entry=document.getElementById('jed').value;
-  const resp=document.getElementById('jclresp');
-  const div=document.createElement('div');div.className='jresp';
-  div.innerHTML='<span class="jresp-lbl">✦ Claude</span><em style="color:var(--ink3)">Thinking...</em>';
-  resp.innerHTML='';resp.appendChild(div);
-  try{
-    const reply=await askClaude('Thoughtful journal companion for a driven pre-med student finishing MPH at Dartmouth before med school in August. Warm, reflective, concise.','My journal entry: '+entry+'\n\nQuestion: '+q,600);
-    div.innerHTML='<span class="jresp-lbl">✦ Claude</span>'+reply;
-  }catch(e){div.innerHTML='<span class="jresp-lbl">✦ Claude</span>Could not connect: '+e.message}
-}
 
 // ============================================================
 // DEADLINES
