@@ -1037,7 +1037,6 @@ function setT(t){
   document.getElementById('tmenu').classList.remove('open');
 }
 function togTmenu(){document.getElementById('tmenu').classList.toggle('open')}
-let _medJustOpened=false;
 function togMedDrop(e){
   if(e){e.stopPropagation();e.preventDefault();}
   const menu=document.getElementById('med-drop-menu');
@@ -1049,12 +1048,11 @@ function togMedDrop(e){
   menu.style.top=(r.bottom+2)+'px';
   menu.style.left=r.left+'px';
   menu.classList.add('open');
-  _medJustOpened=true;
-  setTimeout(()=>{_medJustOpened=false},50);
 }
-document.addEventListener('click',e=>{
+// Use mousedown (fires before click) to close menus without racing the open handler
+document.addEventListener('mousedown',e=>{
   if(!e.target.closest('.tpick'))document.getElementById('tmenu').classList.remove('open');
-  if(!_medJustOpened&&!e.target.closest('#med-drop')&&!e.target.closest('#med-drop-menu')){
+  if(!e.target.closest('#med-drop')&&!e.target.closest('#med-drop-menu')){
     document.getElementById('med-drop-menu').classList.remove('open');
   }
 });
@@ -1546,10 +1544,6 @@ function closeM(id){document.getElementById(id).classList.remove('open')}
 // BRAIN DUMP
 // ============================================================
 let blist=S.g('brain',[]);
-function renderB(){
-  const el=document.getElementById('blist');el.innerHTML='';
-  blist.forEach((e,i)=>{
-    const d=document.createElement('div');d.className='bent';
 function renderB(){
   const el=document.getElementById('blist');el.innerHTML='';
   blist.forEach((e,i)=>{
