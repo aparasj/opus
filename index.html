@@ -581,12 +581,14 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
   <!-- Medicine dropdown -->
   <div class="ndrop" id="med-drop">
     <button class="ndrop-btn" id="med-drop-btn" onclick="togMedDrop(event)">Medicine ▾</button>
-    <div class="ndrop-menu" id="med-drop-menu">
-      <button class="ndrop-item" onclick="goMedTab('clinical')">Clinical Log</button>
-      <button class="ndrop-item" onclick="goMedTab('people')">People</button>
-      <button class="ndrop-item" onclick="goMedTab('whymed')">Why Medicine</button>
-    </div>
   </div>
+</div>
+
+<!-- Medicine dropdown menu — lives OUTSIDE nav to avoid overflow clipping -->
+<div id="med-drop-menu" style="display:none;position:fixed;background:var(--bg2);border:.5px solid var(--border);border-radius:10px;overflow:hidden;min-width:148px;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.3)">
+  <button class="ndrop-item" onclick="goMedTab('clinical')">Clinical Log</button>
+  <button class="ndrop-item" onclick="goMedTab('people')">People</button>
+  <button class="ndrop-item" onclick="goMedTab('whymed')">Why Medicine</button>
 </div>
 
 <div class="views">
@@ -1041,19 +1043,18 @@ function togMedDrop(e){
   if(e){e.stopPropagation();e.preventDefault();}
   const menu=document.getElementById('med-drop-menu');
   const btn=document.getElementById('med-drop-btn');
-  if(menu.classList.contains('open')){
-    menu.classList.remove('open');return;
+  if(menu.style.display==='block'){
+    menu.style.display='none';return;
   }
   const r=btn.getBoundingClientRect();
   menu.style.top=(r.bottom+2)+'px';
   menu.style.left=r.left+'px';
-  menu.classList.add('open');
+  menu.style.display='block';
 }
-// Use mousedown (fires before click) to close menus without racing the open handler
 document.addEventListener('mousedown',e=>{
   if(!e.target.closest('.tpick'))document.getElementById('tmenu').classList.remove('open');
   if(!e.target.closest('#med-drop')&&!e.target.closest('#med-drop-menu')){
-    document.getElementById('med-drop-menu').classList.remove('open');
+    document.getElementById('med-drop-menu').style.display='none';
   }
 });
 setT(S.g('theme','cielo'));
@@ -1083,7 +1084,7 @@ function goTab(id,btn){
   document.getElementById('view-'+id).classList.add('active');
   if(btn){btn.classList.add('active');}
   if(id==='home')updateHomeStats();
-  document.getElementById('med-drop-menu').classList.remove('open');
+  document.getElementById('med-drop-menu').style.display='none';
   const mdb=document.getElementById('med-drop-btn');
   mdb.classList.toggle('active',MED_TABS.includes(id));
 }
@@ -1092,7 +1093,7 @@ function goMedTab(id){
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   const view=document.getElementById('view-'+id);
   if(view)view.classList.add('active');
-  document.getElementById('med-drop-menu').classList.remove('open');
+  document.getElementById('med-drop-menu').style.display='none';
   document.getElementById('med-drop-btn').classList.add('active');
   document.querySelectorAll('.ndrop-item').forEach(i=>i.classList.remove('active'));
   const match=document.querySelector(`.ndrop-item[onclick*="${id}"]`);
