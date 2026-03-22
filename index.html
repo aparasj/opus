@@ -917,12 +917,108 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 <script>
 'use strict';
 // ============================================================
-// STORAGE
+// SUPABASE CONFIG
+// ============================================================
+const SB_URL='https://isqzoaljgzjrwegjjraa.supabase.co';
+const SB_KEY='sb_publishable_4eLbGPCQo5TnE-gCS9emsg_sK2O1miV';
+
+// Cloud sync — debounced per key, 800ms after last write
+const _syncTimers={};
+async function cloudSet(key,value){
+  clearTimeout(_syncTimers[key]);
+  _syncTimers[key]=setTimeout(async()=>{
+    try{
+      await fetch(SB_URL+'/rest/v1/opus_data',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'resolution=merge-duplicates'},
+        body:JSON.stringify({id:key,data:value,updated_at:new Date().toISOString()})
+      });
+    }catch(e){console.warn('Sync failed, stored locally:',key)}
+  },800);
+}
+async function cloudGet(key,def){
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/opus_data?id=eq.'+encodeURIComponent(key)+'&select=data',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    const rows=await r.json();
+    if(rows&&rows.length>0&&rows[0].data!==undefined)return rows[0].data;
+  }catch(e){console.warn('Cloud read failed, using local:',key)}
+  return def;
+}
+async function cloudGetAll(){
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/opus_data?select=id,data',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    return await r.json();
+  }catch(e){return []}
+}
+
+// ============================================================
+// STORAGE — localStorage primary, cloud sync on every write
 // ============================================================
 const S={
   g:(k,d)=>{try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}},
-  s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+  s:(k,v)=>{
+    try{localStorage.setItem(k,JSON.stringify(v))}catch{}
+    cloudSet(k,v); // sync to cloud on every save
+  }
 };
+
+// Sync indicator
+function showSync(ok){
+  let el=document.getElementById('sync-dot');
+  if(!el){el=document.createElement('div');el.id='sync-dot';el.style.cssText='position:fixed;top:10px;left:50%;transform:translateX(-50%);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mf);padding:3px 10px;border-radius:20px;z-index:999;transition:opacity .5s;pointer-events:none';document.body.appendChild(el)}
+  el.style.background=ok?'rgba(106,158,128,0.85)':'rgba(200,64,42,0.85)';
+  el.style.color='#fff';el.textContent=ok?'✓ synced':'saving...';el.style.opacity='1';
+  setTimeout(()=>el.style.opacity='0',ok?1800:500);
+}
+
+// On load: pull all cloud data, merge into localStorage (cloud wins)
+async function initCloudSync(){
+  showSync(false);
+  const rows=await cloudGetAll();
+  if(rows&&rows.length){
+    rows.forEach(row=>{
+      if(row.id&&row.data!==undefined){
+        try{localStorage.setItem(row.id,JSON.stringify(row.data))}catch{}
+      }
+    });
+    showSync(true);
+  } else {
+    // First time — push all existing localStorage to cloud
+    const keys=[];for(let i=0;i<localStorage.length;i++)keys.push(localStorage.key(i));
+    for(const k of keys){
+      try{const v=JSON.parse(localStorage.getItem(k));cloudSet(k,v)}catch{}
+    }
+    showSync(true);
+  }
+  // Re-render everything with synced data
+  reRenderAll();
+}
+
+function reRenderAll(){
+  // Reload all module data from (now-synced) localStorage then re-render
+  goals=S.g('goals',DG);
+  habits=S.g('habits',DEF_HABITS);
+  blist=S.g('brain',[]);
+  rlItems=S.g('readingList',DEF_RL);
+  notes=S.g('notes',DN);
+  jEs=S.g('journal',[]);
+  dls=S.g('deadlines',DDL);
+  people=S.g('people',DEF_PEOPLE);
+  clog=S.g('clog',DEF_CLOG);
+  renderWk();renderHWk();renderG();renderHabits();renderB();renderRL();renderSB();renderJ();renderDL();renderPeople();renderCLog();updateHomeStats();
+  // restore why medicine
+  const wt=document.getElementById('why-ta');if(wt)wt.value=S.g('why_medicine','');
+  // restore postit
+  const pt=document.getElementById('postit-ta');if(pt)pt.value=S.g('postit','');
+  // restore intention
+  const ii=document.getElementById('intention-inp');if(ii)ii.value=S.g('intention_'+new Date().toISOString().slice(0,10),'');
+  // restore cal
+  renderCalEmbed();
+}
 
 // ============================================================
 // THEME
@@ -1794,7 +1890,7 @@ whyTA.value=S.g('why_medicine','');
 whyTA.addEventListener('input',()=>S.s('why_medicine',whyTA.value));
 
 // ============================================================
-// INIT
+// INIT — render from localStorage instantly, then sync cloud
 // ============================================================
 renderWk();
 renderHWk();
@@ -1808,6 +1904,9 @@ renderDL();
 renderPeople();
 renderCLog();
 updateHomeStats();
+
+// Pull cloud data and re-render with latest (cloud wins on conflict)
+initCloudSync();
 </script>
 </body>
 </html>
