@@ -1126,7 +1126,7 @@ function connectCal(){const url=document.getElementById('cal-inp').value.trim();
 function renderCalEmbed(){
   const url=S.g('calurl',null);
   document.getElementById('calembed').innerHTML=url
-    ?'<iframe src="'+url+'" style="width:100%;height:260px;border:none;border-radius:8px;margin-top:4px" frameborder="0"></iframe>'
+    ?'<iframe src="'+url+'" style="width:100%;height:500px;border:none;border-radius:8px;margin-top:4px" frameborder="0"></iframe>'
     :'<div style="text-align:center;padding:20px 0;font-size:.68rem;color:var(--ink3)">Connect your Google Calendar to see it here</div>';
 }
 renderCalEmbed();
