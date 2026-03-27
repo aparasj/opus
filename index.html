@@ -211,7 +211,14 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 .pomo-set-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.68rem;color:var(--ink2)}
 .pomo-set-row label{flex:1;font-family:var(--mf);font-size:.62rem;color:var(--ink3)}
 .pomo-set-row input[type=number]{width:54px;background:var(--bg3);border:.5px solid var(--border);border-radius:5px;padding:3px 7px;font-size:.68rem;color:var(--ink);outline:none;text-align:center}
-.home-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-top-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+.home-week-section{background:var(--bg2);border:.5px solid var(--border);border-radius:11px;padding:12px 14px}
+.home-util-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.cal-dropzone{background:var(--bg2);border:1.5px dashed var(--border);border-radius:10px;padding:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:all .18s;min-height:90px}
+.cal-dropzone:hover,.cal-dropzone.dz-over{border-color:var(--acc);background:var(--accbg)}
+.dz-icon{font-size:1.3rem;line-height:1}
+.dz-text{font-size:.62rem;color:var(--ink2);font-family:var(--mf);letter-spacing:.07em;text-align:center}
+.dz-sub{font-size:.5rem;color:var(--ink3);font-family:var(--mf);text-align:center}
 .calslot{background:var(--bg2);border:.5px solid var(--border);border-radius:11px;padding:12px 14px}
 .calslot-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
 .calslot-lbl{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-family:var(--mf)}
@@ -680,7 +687,6 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 <!-- NAV -->
 <div class="nav fu">
   <button class="ntab active" onclick="goTab('home',this)">Home</button>
-  <button class="ntab" onclick="goTab('week',this)">Week</button>
   <button class="ntab" onclick="goTab('goals',this)">Goals</button>
   <button class="ntab" onclick="goTab('deadlines',this)">Deadlines</button>
   <button class="ntab" onclick="goTab('notes',this)">Notes</button>
@@ -713,44 +719,64 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
 <!-- HOME -->
 <div class="view active" id="view-home">
   <div class="home-cols">
-    <!-- Intention checklist -->
-    <div class="intention-card">
-      <span class="intention-lbl">Today's intentions</span>
-      <div class="intention-list" id="intention-list"></div>
-      <button class="intention-add" onclick="addIntentionItem()">+ Add intention</button>
-    </div>
-    <!-- Post-it running notes -->
-    <div class="postit">
-      <span class="postit-lbl">Running notes</span>
-      <div class="postit-toolbar">
-        <button class="postit-tbtn" onclick="piFmt('bold')"><b>B</b></button>
-        <button class="postit-tbtn" onclick="piFmt('italic')"><i>I</i></button>
-        <button class="postit-tbtn" onclick="piList()">• List</button>
-        <button class="postit-tbtn" onclick="piHL()">Highlight</button>
+    <!-- Top row: intentions + running notes 50/50 -->
+    <div class="home-top-row">
+      <div class="intention-card">
+        <span class="intention-lbl">Today's intentions</span>
+        <div class="intention-list" id="intention-list"></div>
+        <button class="intention-add" onclick="addIntentionItem()">+ Add intention</button>
       </div>
-      <div class="postit-rte" id="postit-rte" contenteditable="true" data-placeholder="jot anything here — it stays and grows..."></div>
+      <div class="postit">
+        <span class="postit-lbl">Running notes</span>
+        <div class="postit-toolbar">
+          <button class="postit-tbtn" onclick="piFmt('bold')"><b>B</b></button>
+          <button class="postit-tbtn" onclick="piFmt('italic')"><i>I</i></button>
+          <button class="postit-tbtn" onclick="piList()">• List</button>
+          <button class="postit-tbtn" onclick="piHL()">Highlight</button>
+        </div>
+        <div class="postit-rte" id="postit-rte" contenteditable="true" data-placeholder="jot anything here — it stays and grows..."></div>
+      </div>
     </div>
-    <!-- Week overview -->
-    <div>
+    <!-- Week grid -->
+    <div class="home-week-section">
       <div class="hw-hdr">
         <div class="hw-title" id="hw-range"></div>
-        <div style="display:flex;gap:5px">
+        <div style="display:flex;gap:5px;align-items:center">
+          <div class="wlegend" style="margin:0;padding:4px 10px;border-radius:6px">
+            <div class="wleg-item"><div class="wleg-dot" style="background:var(--acc2)"></div>Class</div>
+            <div class="wleg-item"><div class="wleg-dot" style="background:#6A9E80"></div>Work</div>
+            <div class="wleg-item"><div class="wleg-dot" style="background:#5A8FD4"></div>Gym</div>
+            <div class="wleg-item"><div class="wleg-dot" style="background:#A060C0"></div>Research</div>
+            <div class="wleg-item"><div class="wleg-dot" style="background:var(--ink3)"></div>Personal</div>
+            <div class="wleg-item"><div class="wleg-dot" style="background:var(--border)"></div>Free</div>
+          </div>
           <button class="hw-arr" onclick="sharedChWk(-1)">&#8249;</button>
           <button class="hw-arr" onclick="sharedChWk(1)">&#8250;</button>
         </div>
       </div>
       <div class="hwgrid" id="hwgrid"></div>
     </div>
-    <!-- Bottom row -->
-    <div class="home-bottom-row">
-      <div class="home-dl-card" onclick="goTab('deadlines',document.querySelectorAll('.ntab')[3])">
+    <!-- Utility row: drop zone + deadline + pomodoro -->
+    <div class="home-util-row">
+      <!-- Calendar drop zone -->
+      <div class="cal-dropzone" id="cal-dropzone"
+        ondragover="event.preventDefault();this.classList.add('dz-over')"
+        ondragleave="this.classList.remove('dz-over')"
+        ondrop="handleCalDrop(event)">
+        <div class="dz-icon">📅</div>
+        <div class="dz-text">Drop to calendar</div>
+        <div class="dz-sub">drag a block here → set time → auto-adds</div>
+      </div>
+      <!-- Next deadline -->
+      <div class="home-dl-card" onclick="goTab('deadlines',null)">
         <div class="home-dl-lbl">Next deadline</div>
         <div class="home-dl-val" id="hs-dl">—</div>
       </div>
+      <!-- Pomodoro -->
       <div class="pomo-card">
         <div class="pomo-top">
           <span class="pomo-lbl">Focus timer</span>
-          <button class="pomo-settings-btn" onclick="togPomoSet()">⚙ Settings</button>
+          <button class="pomo-settings-btn" onclick="togPomoSet()">⚙</button>
         </div>
         <div class="pomo-display" id="pomo-display">25:00</div>
         <div class="pomo-phase" id="pomo-phase">Focus</div>
@@ -768,7 +794,7 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
         </div>
       </div>
     </div>
-    <!-- Calendar -->
+    <!-- Calendar (double height) -->
     <div class="calslot">
       <div class="calslot-hdr">
         <span class="calslot-lbl">Calendar integration</span>
@@ -786,37 +812,28 @@ input,textarea,select{font-family:var(--bf);font-size:inherit}
   </div>
 </div>
 
-<!-- WEEK -->
-<div class="view" id="view-week">
-  <div class="wnav">
-    <button class="warr" onclick="sharedChWk(-1)">&#8249;</button>
-    <div class="wrange" id="wrange"></div>
-    <button class="warr" onclick="sharedChWk(1)">&#8250;</button>
-  </div>
-  <div class="wlegend">
-    <div class="wleg-item"><div class="wleg-dot" style="background:var(--acc2)"></div>Class</div>
-    <div class="wleg-item"><div class="wleg-dot" style="background:#6A9E80"></div>Work</div>
-    <div class="wleg-item"><div class="wleg-dot" style="background:#5A8FD4"></div>Gym</div>
-    <div class="wleg-item"><div class="wleg-dot" style="background:#A060C0"></div>Research</div>
-    <div class="wleg-item"><div class="wleg-dot" style="background:var(--ink3)"></div>Personal</div>
-    <div class="wleg-item"><div class="wleg-dot" style="background:var(--border)"></div>Free</div>
-  </div>
-  <div class="wgrid" id="wgrid"></div>
-  <div class="hab-section">
-    <div class="hab-section-hdr">
-      <span class="slbl" style="margin:0">Daily habits</span>
-      <div style="display:flex;gap:7px;align-items:center">
-        <button class="pill-btn" onclick="habChWk(-1)">&#8249;</button>
-        <span id="hab-range" style="font-size:.62rem;color:var(--ink3);font-family:var(--mf)"></span>
-        <button class="pill-btn" onclick="habChWk(1)">&#8250;</button>
-      </div>
+<!-- CAL EVENT MODAL -->
+<div class="mov" id="mcal">
+  <div class="modal" style="width:340px">
+    <div class="mtitle" id="mcal-title">Add to Google Calendar</div>
+    <div style="font-size:.62rem;color:var(--ink3);margin-bottom:10px;font-family:var(--mf)" id="mcal-event-name"></div>
+    <div class="mlbl">Date</div>
+    <input class="minp" type="date" id="mcal-date">
+    <div class="mlbl">Start time</div>
+    <input class="minp" type="time" id="mcal-time">
+    <div class="mlbl">Duration</div>
+    <select class="minp" id="mcal-dur">
+      <option value="30">30 minutes</option>
+      <option value="60" selected>1 hour</option>
+      <option value="90">1.5 hours</option>
+      <option value="120">2 hours</option>
+      <option value="180">3 hours</option>
+    </select>
+    <div class="mrow">
+      <button class="mbtn" onclick="closeM('mcal')">Cancel</button>
+      <button class="mbtn a" onclick="confirmCalEvent()">Add to Calendar</button>
     </div>
-    <div class="hab-grid-hdr" id="hab-hdr"></div>
-    <div id="habit-list"></div>
-    <div class="add-habit-row">
-      <input class="add-habit-inp" id="hab-inp" placeholder="New habit..." onkeydown="if(event.key==='Enter')addHabit()">
-      <button class="pill-btn acc" onclick="addHabit()">Add</button>
-    </div>
+    <div id="mcal-status" style="display:none;margin-top:8px;font-size:.62rem;text-align:center;font-family:var(--mf);color:var(--acc2)"></div>
   </div>
 </div>
 
@@ -1145,14 +1162,14 @@ async function initCloudSync(){
   reRenderAll();
 }
 function reRenderAll(){
-  goals=S.g('goals',DG);habits=S.g('habits',DEF_HABITS);
+  goals=S.g('goals',DG);
   blist=S.g('brain',[]);rlItems=S.g('readingList',DEF_RL);
   jEs=S.g('journal',[]);dls=S.g('deadlines',DDL);
   people=S.g('people',DEF_PEOPLE);clog=S.g('clog',DEF_CLOG);
   txs=S.g('budget',[]);groceries=S.g('groceries',[]);
   recipes=S.g('recipes',[]);mealPlan=S.g('mealPlan',{});
   noteFolders=S.g('noteFolders',DEFAULT_FOLDERS);notes=S.g('notes2',null)||S.g('notes',[])||DEFAULT_NOTES;
-  renderWk();renderHWk();renderG();renderHabits();renderB();renderRL();
+  renderHomeWk();renderG();renderB();renderRL();
   renderNoteTree();renderJ();renderDL();renderPeople();renderCLog();
   renderBudget();renderMealGrid();renderGrocery();renderRecipes();
   updateHomeStats();
@@ -1237,7 +1254,7 @@ function connectCal(){const url=document.getElementById('cal-inp').value.trim();
 function renderCalEmbed(){
   const url=S.g('calurl',null);
   document.getElementById('calembed').innerHTML=url
-    ?'<iframe src="'+url+'" style="width:100%;height:500px;border:none;border-radius:8px;margin-top:4px" frameborder="0"></iframe>'
+    ?'<iframe src="'+url+'" style="width:100%;height:900px;border:none;border-radius:8px;margin-top:4px" frameborder="0"></iframe>'
     :'<div style="text-align:center;padding:20px 0;font-size:.68rem;color:var(--ink3)">Connect your Google Calendar to see it here</div>';
 }
 renderCalEmbed();
@@ -1345,7 +1362,7 @@ const DEF_SCH={
 function getWkStart(off){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay()+(off*7));return d}
 function gSch(off){const stored=S.g('sch_'+off,null);if(stored)return stored;if(off===0){const r={};for(let i=0;i<7;i++)r[i]=[...(DEF_SCH[i]||[]).map(x=>({...x}))];return r;}const r={};for(let i=0;i<7;i++)r[i]=[];return r}
 function sSch(off,data){S.s('sch_'+off,data)}
-function sharedChWk(dir){sharedWkO+=dir;renderWk();renderHWk()}
+function sharedChWk(dir){sharedWkO+=dir;renderHomeWk()}
 function renderWk(){
   const start=getWkStart(sharedWkO);const end=new Date(start);end.setDate(end.getDate()+6);
   const fmt=d=>MONTHS[d.getMonth()].slice(0,3)+' '+d.getDate();
@@ -1363,34 +1380,53 @@ function renderWk(){
       span.addEventListener('blur',()=>{item.l=span.textContent.trim();sSch(sharedWkO,sc)});
       span.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();span.blur()}});
       const del=document.createElement('button');del.className='pdel';del.textContent='×';
-      del.onclick=()=>{(sc[i]||[]).splice(idx,1);sSch(sharedWkO,sc);renderWk()};
+      del.onclick=()=>{(sc[i]||[]).splice(idx,1);sSch(sharedWkO,sc);renderHomeWk()};
       p.appendChild(span);p.appendChild(del);
       p.addEventListener('dragstart',e=>{if(e.target===span)return;dragSrc={day:i,idx};p.classList.add('dragging')});
       p.addEventListener('dragend',()=>p.classList.remove('dragging'));
       p.addEventListener('dragover',e=>{e.preventDefault();p.classList.add('dtarget')});
       p.addEventListener('dragleave',()=>p.classList.remove('dtarget'));
-      p.addEventListener('drop',e=>{e.preventDefault();p.classList.remove('dtarget');if(!dragSrc||dragSrc.day===i&&dragSrc.idx===idx)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].splice(idx,0,mv);sSch(sharedWkO,sc);dragSrc=null;renderWk()});
+      p.addEventListener('drop',e=>{e.preventDefault();p.classList.remove('dtarget');if(!dragSrc||dragSrc.day===i&&dragSrc.idx===idx)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].splice(idx,0,mv);sSch(sharedWkO,sc);dragSrc=null;renderHomeWk()});
       col.appendChild(p);
     });
     col.addEventListener('dragover',e=>e.preventDefault());
-    col.addEventListener('drop',e=>{e.preventDefault();if(!dragSrc)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].push(mv);sSch(sharedWkO,sc);dragSrc=null;renderWk()});
+    col.addEventListener('drop',e=>{e.preventDefault();if(!dragSrc)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].push(mv);sSch(sharedWkO,sc);dragSrc=null;renderHomeWk()});
     const ab=document.createElement('button');ab.className='addp';ab.textContent='+ add';ab.onclick=()=>openPM(i);col.appendChild(ab);grid.appendChild(col);
   }
 }
-function renderHWk(){
+function renderHomeWk(){
   const start=getWkStart(sharedWkO);const end=new Date(start);end.setDate(end.getDate()+6);
   const fmt=d=>MONTHS[d.getMonth()].slice(0,3)+' '+d.getDate();
-  document.getElementById('hw-range').textContent=fmt(start)+' — '+fmt(end);
-  const grid=document.getElementById('hwgrid');grid.innerHTML='';
+  const rangeEl=document.getElementById('hw-range');if(rangeEl)rangeEl.textContent=fmt(start)+' — '+fmt(end);
+  const grid=document.getElementById('hwgrid');if(!grid)return;grid.innerHTML='';
   const sc=gSch(sharedWkO);const today=new Date();today.setHours(0,0,0,0);
   for(let i=0;i<7;i++){
     const d=new Date(start);d.setDate(d.getDate()+i);const isT=d.getTime()===today.getTime();
-    const col=document.createElement('div');col.className='hwcol'+(isT?' today':'');
-    col.innerHTML='<div class="hwdhdr"><span class="hwdn">'+DAYS_S[i]+'</span><span class="hwdd">'+d.getDate()+'</span></div>';
-    (sc[i]||[]).forEach(item=>{const p=document.createElement('div');p.className='hwep '+(item.t||'free');p.textContent=item.l;col.appendChild(p)});
+    const col=document.createElement('div');col.className='dcol'+(isT?' today':'');
+    col.innerHTML='<div class="dhdr"><span class="dn">'+DAYS_S[i]+'</span><span class="dd">'+d.getDate()+'</span></div>';
+    const items=sc[i]||[];
+    items.forEach((item,idx)=>{
+      const p=document.createElement('div');p.className='ep '+(item.t||'free');p.draggable=true;
+      const span=document.createElement('span');span.className='ptxt';span.contentEditable='true';span.textContent=item.l;
+      span.addEventListener('blur',()=>{item.l=span.textContent.trim();sSch(sharedWkO,sc)});
+      span.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();span.blur()}});
+      const del=document.createElement('button');del.className='pdel';del.textContent='×';
+      del.onclick=()=>{(sc[i]||[]).splice(idx,1);sSch(sharedWkO,sc);renderHomeWk()};
+      p.appendChild(span);p.appendChild(del);
+      p.addEventListener('dragstart',e=>{if(e.target===span)return;dragSrc={day:i,idx,label:item.l};p.classList.add('dragging')});
+      p.addEventListener('dragend',()=>p.classList.remove('dragging'));
+      p.addEventListener('dragover',e=>{e.preventDefault();p.classList.add('dtarget')});
+      p.addEventListener('dragleave',()=>p.classList.remove('dtarget'));
+      p.addEventListener('drop',e=>{e.preventDefault();p.classList.remove('dtarget');if(!dragSrc||dragSrc.day===i&&dragSrc.idx===idx)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].splice(idx,0,mv);sSch(sharedWkO,sc);dragSrc=null;renderHomeWk()});
+      col.appendChild(p);
+    });
+    col.addEventListener('dragover',e=>e.preventDefault());
+    col.addEventListener('drop',e=>{e.preventDefault();if(!dragSrc)return;const mv=sc[dragSrc.day].splice(dragSrc.idx,1)[0];if(!sc[i])sc[i]=[];sc[i].push(mv);sSch(sharedWkO,sc);dragSrc=null;renderHomeWk()});
+    const ab=document.createElement('button');ab.className='addp';ab.onclick=()=>openPM(i);ab.textContent='+ add';col.appendChild(ab);
     grid.appendChild(col);
   }
 }
+function renderHWk(){renderHomeWk()}
 function openPM(day){
   pDay=day;selPT='free';document.getElementById('pillInp').value='';
   const pt=document.getElementById('ptypes');pt.innerHTML='';
@@ -1400,46 +1436,8 @@ function openPM(day){
 function savePill(){
   const nm=document.getElementById('pillInp').value.trim();if(!nm)return;
   const sc=gSch(sharedWkO);if(!sc[pDay])sc[pDay]=[];sc[pDay].push({l:nm,t:selPT});
-  sSch(sharedWkO,sc);closeM('mpill');renderWk();renderHWk();
+  sSch(sharedWkO,sc);closeM('mpill');renderHomeWk();
 }
-
-// ============================================================
-// HABITS
-// ============================================================
-let habWkO=0;
-const DEF_HABITS=[{id:1,name:'Gym',emoji:'🏋️'},{id:2,name:'Biotin',emoji:'💊'},{id:3,name:'Bansuri practice',emoji:'🎵'},{id:4,name:'Study / read',emoji:'📚'},{id:5,name:'Water 2L+',emoji:'💧'}];
-let habits=S.g('habits',DEF_HABITS);let habCtr=S.g('habCtr',10);
-function getHabWkStart(off){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay()+(off*7));return d}
-function renderHabits(){
-  const start=getHabWkStart(habWkO);const today=new Date();today.setHours(0,0,0,0);
-  const fmt=d=>MONTHS[d.getMonth()].slice(0,3)+' '+d.getDate();
-  const end=new Date(start);end.setDate(end.getDate()+6);
-  document.getElementById('hab-range').textContent=fmt(start)+'–'+fmt(end);
-  const hdr=document.getElementById('hab-hdr');hdr.innerHTML='<div></div>';
-  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(d.getDate()+i);const isT=d.getTime()===today.getTime();const cell=document.createElement('div');cell.className='hgday';cell.style.color=isT?'var(--acc2)':'';cell.textContent=DAYS_S[i][0]+d.getDate();hdr.appendChild(cell)}
-  const list=document.getElementById('habit-list');list.innerHTML='';
-  habits.forEach((hab,hi)=>{
-    const log=S.g('hlog_'+hab.id,{});let streak=0;const sc2=new Date(today);
-    while(true){const k=sc2.toISOString().slice(0,10);if(log[k]){streak++;sc2.setDate(sc2.getDate()-1)}else break}
-    const row=document.createElement('div');row.className='habit-row';
-    const nameWrap=document.createElement('div');nameWrap.className='habit-name-wrap';
-    const nameEl=document.createElement('span');nameEl.className='habit-name';nameEl.contentEditable='true';nameEl.textContent=(hab.emoji||'')+' '+hab.name;
-    nameEl.addEventListener('blur',()=>{hab.name=nameEl.textContent.replace(hab.emoji,'').trim()||hab.name;S.s('habits',habits)});
-    nameEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();nameEl.blur()}});
-    const del=document.createElement('span');del.className='habit-del';del.textContent='×';del.onclick=()=>delHabit(hi);
-    const streakEl=document.createElement('span');streakEl.className='habit-streak';if(streak>1)streakEl.textContent=streak+'🔥';
-    nameWrap.appendChild(nameEl);nameWrap.appendChild(del);nameWrap.appendChild(streakEl);row.appendChild(nameWrap);
-    for(let i=0;i<7;i++){
-      const d=new Date(start);d.setDate(d.getDate()+i);const key=d.toISOString().slice(0,10);const isDone=!!log[key];const isT=d.getTime()===today.getTime();
-      const cell=document.createElement('div');cell.className='hcell'+(isDone?' done':'')+(isT?' today-col':'');
-      cell.onclick=()=>{const l=S.g('hlog_'+hab.id,{});if(l[key])delete l[key];else l[key]=1;S.s('hlog_'+hab.id,l);renderHabits()};row.appendChild(cell);
-    }
-    list.appendChild(row);
-  });
-}
-function addHabit(){const inp=document.getElementById('hab-inp');const nm=inp.value.trim();if(!nm)return;habCtr++;S.s('habCtr',habCtr);habits.push({id:habCtr,name:nm,emoji:'✦'});S.s('habits',habits);inp.value='';renderHabits()}
-function delHabit(hi){habits.splice(hi,1);S.s('habits',habits);renderHabits()}
-function habChWk(dir){habWkO+=dir;renderHabits()}
 
 // ============================================================
 // GOALS
@@ -2184,10 +2182,56 @@ function exportData(){
   document.getElementById('tmenu').classList.remove('open');
 }
 
+
+// ============================================================
+// CALENDAR DROP ZONE
+// ============================================================
+let calDropLabel='';
+function handleCalDrop(e){
+  e.preventDefault();
+  document.getElementById('cal-dropzone').classList.remove('dz-over');
+  // Get dragged block label
+  const label=dragSrc?dragSrc.label:'Event';
+  calDropLabel=label;
+  // Pre-fill date with today
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('mcal-date').value=today;
+  document.getElementById('mcal-time').value='09:00';
+  document.getElementById('mcal-event-name').textContent='"'+label+'"';
+  document.getElementById('mcal-title').textContent='Add to Google Calendar';
+  document.getElementById('mcal-status').style.display='none';
+  document.getElementById('mcal').classList.add('open');
+  dragSrc=null;
+}
+async function confirmCalEvent(){
+  const title=calDropLabel;
+  const date=document.getElementById('mcal-date').value;
+  const time=document.getElementById('mcal-time').value;
+  const dur=parseInt(document.getElementById('mcal-dur').value);
+  if(!date||!time){alert('Please fill in date and time');return}
+  const statusEl=document.getElementById('mcal-status');
+  statusEl.style.display='block';statusEl.textContent='Saving...';statusEl.style.color='var(--ink3)';
+  try{
+    const resp=await fetch(SB_URL+'/rest/v1/calendar_events',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({title,event_date:date,event_time:time,duration_minutes:dur})
+    });
+    if(resp.ok||resp.status===201){
+      statusEl.textContent='✓ Sent to Google Calendar via Zapier';statusEl.style.color='var(--acc2)';
+      setTimeout(()=>closeM('mcal'),1800);
+    } else {
+      statusEl.textContent='Error — check Supabase table exists';statusEl.style.color='var(--acc)';
+    }
+  } catch(err){
+    statusEl.textContent='Network error: '+err.message;statusEl.style.color='var(--acc)';
+  }
+}
+
 // ============================================================
 // INIT
 // ============================================================
-renderWk();renderHWk();renderG();renderHabits();
+renderHomeWk();renderG();
 renderB();renderRL();renderNoteTree();renderJ();renderDL();
 renderPeople();renderCLog();renderBudget();
 renderMealGrid();renderGrocery();renderRecipes();
